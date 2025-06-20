@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
 import { FiShoppingCart } from "react-icons/fi";
-import { Button, Modal } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import { addToCart } from "../components/redux/feature/cartSlice";
 import { TfiUser } from "react-icons/tfi";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +51,12 @@ const Home = () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
+  const editMutation = useMutation({
+    mutationFn: (body) => api.post("/users", body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
   const handleDelete = (id) => {
     deleteMutation.mutate(id);
   };
@@ -85,55 +91,57 @@ const Home = () => {
         <Button type="primary" onClick={showModal}>
           Create
         </Button>
-        <Modal
-          title="Create Users"
-          closable={{ "aria-label": "Custom Close Button" }}
-          open={isModalOpen}
-          onCancel={handleCancel}
-          footer={false}
-        >
-          <form onSubmit={handleSubmit}>
-            <label className="block text-sm font-medium text-gray-700">
-              Rasmi
-              <input
-                type="text"
-                name="img"
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                placeholder="Rasm kiriting"
-              />
-            </label>
-            <label className="block text-sm font-medium text-gray-700">
-              Ism
-              <input
-                type="text"
-                name="name"
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                placeholder="Ismingizni kiriting"
-              />
-            </label>
-            <label className="block text-sm font-medium text-gray-700">
-              Yoshi
-              <input
-                type="text"
-                name="age"
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                placeholder="Yoshini kiriting"
-              />
-            </label>
-            <label className="block text-sm font-medium text-gray-700">
-              Kasbi
-              <input
-                type="text"
-                name="profession"
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                placeholder="Kasbini kiriting"
-              />
-            </label>
-            <button className="w-full mt-3 bg-blue-800 text-white px-2 py-1 border rounded">
-              Create
-            </button>
-          </form>
-        </Modal>
+        {isModalOpen && (
+          <Modal
+            title="Create Users"
+            closable={{ "aria-label": "Custom Close Button" }}
+            open={isModalOpen}
+            onCancel={handleCancel}
+            footer={false}
+          >
+            <form onSubmit={handleSubmit}>
+              <label className="block text-sm font-medium text-gray-700">
+                Rasmi
+                <input
+                  type="text"
+                  name="img"
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Rasm kiriting"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Ism
+                <input
+                  type="text"
+                  name="name"
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Ismingizni kiriting"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Yoshi
+                <input
+                  type="text"
+                  name="age"
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Yoshini kiriting"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Kasbi
+                <input
+                  type="text"
+                  name="profession"
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Kasbini kiriting"
+                />
+              </label>
+              <button className="w-full mt-3 bg-blue-800 text-white px-2 py-1 border rounded">
+                Create
+              </button>
+            </form>
+          </Modal>
+        )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 mt-10">
         {users.map((user) => (
@@ -162,7 +170,7 @@ const Home = () => {
               </div>
 
               <div className="absolute top-2 right-2">
-                <button className="bg-white p-2 rounded-full text-gray-700 hover:text-red-500 shadow">
+                <button className="bg-white p-2 rounded-full shadow hover:bg-red-100 transition">
                   {wishlistItem.some((wish) => wish.id === user.id) ? (
                     <FaHeart
                       className=" w-4 h-4  text-red-600"
@@ -219,12 +227,15 @@ const Home = () => {
                 >
                   Edit
                 </button>
-                <button
-                  onClick={() => handleDelete(user.id)}
-                  className="px-4 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-100 transition"
+                <Popconfirm
+                  title="Delete the task"
+                  description="Are you sure to delete this task?"
+                  onConfirm={() => handleDelete(user.id)}
+                  okText="Yes"
+                  cancelText="No"
                 >
-                  Delete
-                </button>
+                  <Button danger>Delete</Button>
+                </Popconfirm>
               </div>
             </div>
           </div>

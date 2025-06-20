@@ -2,7 +2,6 @@ import React from "react";
 import { CiHeart } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishlist } from "../redux/feature/wishlistSlice";
-
 import { TfiUser } from "react-icons/tfi";
 
 const Wishlist = () => {

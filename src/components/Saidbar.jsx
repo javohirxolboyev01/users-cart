@@ -21,13 +21,13 @@ const Sidebar = () => {
         <NavLink to="/" className={linkClass}>
           <FiHome /> Asosiy
         </NavLink>
-        <NavLink to="/chegirmalar" className={linkClass}>
+        <NavLink to="/cart" className={linkClass}>
           <FiTag /> Chegirmalar
         </NavLink>
         <NavLink to="/yangi-mahsulotlar" className={linkClass}>
           <FiStar /> Yangi mahsulotlar
         </NavLink>
-        <NavLink to="/sevimlilar" className={linkClass}>
+        <NavLink to="/wish" className={linkClass}>
           <FiHeart /> Sevimlilar
         </NavLink>
       </nav>

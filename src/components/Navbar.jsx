@@ -9,7 +9,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/UEFA_Champions_League_logo.svg/1200px-UEFA_Champions_League_logo.svg.png"
+            src="https://www.babinc.org/wp-content/uploads/2020/09/User-Testing_Logo_CMYK.png"
             alt="Homeplus"
             className="h-auto w-25 object-contain cursor-pointer hover:opacity-90 transition"
           />
